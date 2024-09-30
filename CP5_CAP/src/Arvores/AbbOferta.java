@@ -72,4 +72,14 @@ public class AbbOferta {
 		}
 		return p;
 	}
+	public Cliente retiraDecrescente(Arvore p) {
+		Cliente cliente = null;
+		if(p!=null) {
+			retiraDecrescente(p.esq);
+			retiraDecrescente(p.dir);
+			 cliente = p.cliente;
+			 removeValor(p,p.cliente);
+		}
+		return cliente; 
+	}
 }

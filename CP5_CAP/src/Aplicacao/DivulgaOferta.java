@@ -3,6 +3,7 @@ package Aplicacao;
 import java.util.Scanner;
 
 import Arvores.AbbCliente;
+import Arvores.AbbOferta;
 import Arvores.FilaCliente;
 import model.Cliente;
 
@@ -16,7 +17,7 @@ public class DivulgaOferta {
 		AbbOferta oferta = new AbbOferta();
 	
 		FilaCliente filaOferta = new FilaCliente();
-		filaOferta.init();
+		//filaOferta.init();
 		
 		int opcao, op;
 		String nome, whatsapp, cpf;
@@ -30,7 +31,7 @@ public class DivulgaOferta {
 			opcao = le.nextInt();
 			switch (opcao) {
 			case 0:
-				System.out.println("\n\nClientes que não aceitaram ou não estavam	adequados para a oferta");
+				System.out.println("\n\nClientes que não aceitaram ou não estavam adequados para a oferta");
 				/*
 				 * Apresenta todos os clientes que nao aceitaram nenhuma oferta
 				 */
@@ -55,6 +56,9 @@ public class DivulgaOferta {
 			case 2:
 				System.out.print("Qual o valor de saldo minimo exigido: R$ ");
 				totalGasto = le.nextDouble();
+				oferta.root= oferta.inserir(oferta.root, cadastro.verificaOferta(cadastro.root, totalGasto));
+				oferta.show(oferta.root);
+				oferta.retiraDecrescente(oferta.root);
 				/*
 				 * Percorrendo a ABB de cadastro gera ABB oferta usando como criterio de
 				 * organizacao o total de gasto do cliente.

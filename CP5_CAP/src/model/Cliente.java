@@ -1,11 +1,11 @@
 package model;
 
 public class Cliente {
-	String nome;
-	String CPF;
-	String whatsapp;
-	double totalGasto;
-	boolean aptoOferta;
+	private String nome;
+	private String CPF;
+	private String whatsapp;
+	private double totalGasto;
+	private boolean aptoOferta;
 	
 	public Cliente(String nome, String cPF, String whatsapp, double totalGasto) {
 		super();
@@ -53,5 +53,8 @@ public class Cliente {
 
 	public void setAptoOferta(boolean aptoOferta) {
 		this.aptoOferta = aptoOferta;
+	}
+	public boolean getAptoOferta() {
+		return aptoOferta;
 	}
 }

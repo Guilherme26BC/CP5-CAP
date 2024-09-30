@@ -73,12 +73,28 @@ public class AbbCliente {
 		}
 		return p;
 	}
-	public Arvore verificaOferta(Arvore p, double valorO) {
+	public Cliente verificaOferta(Arvore p, double valorO) {
 		if(p!=null) {
 			verificaOferta(p.esq, valorO);
-			
+			if(p.cliente.getTotalGasto()>=valorO) 
+				p.cliente.setAptoOferta(true);
 			verificaOferta(p.dir, valorO);
 			
+			return p.cliente;
+		}
+		return null;
+	}
+	public void showFalse(Arvore p) {
+		if (p != null) {
+			show(p.esq);
+			if(p.cliente.getAptoOferta()) {
+				System.out.println("\t" + p.cliente.getNome());
+				System.out.println("\t" + p.cliente.getCPF());
+				System.out.println("\t" + p.cliente.getWhatsapp());
+				System.out.println("\t" + p.cliente.getTotalGasto());
+				
+			}
+			show(p.dir);
 		}
 	}
 }
