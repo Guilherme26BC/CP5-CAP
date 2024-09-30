@@ -90,10 +90,7 @@ public class DivulgaOferta {
 					case 1:
 						System.out.print("Informe CPF para consulta");
 						cpf = le.next();
-						/*
-						 * Apresenta todos os atributos do cliente consultado ou avisa se CPF nao foi
-						 * encontrado.
-						 */
+						cadastro.procuraCliente(null, cpf);
 						break;
 					case 2:
 						/*

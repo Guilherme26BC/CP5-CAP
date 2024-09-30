@@ -1,5 +1,6 @@
 package Arvores;
 
+import Arvores.AbbCliente.Arvore;
 import model.Cliente;
 
 public class AbbOferta {
@@ -20,7 +21,7 @@ public class AbbOferta {
 			p.dir = null;
 		}
 		// compara o valor com "p" e analisa em qual lugar ele fica
-		else if (clienteAux.getTotalGasto()<p.cliente.getTotalGasto())
+		else if (clienteAux.getTotalGasto() < p.cliente.getTotalGasto())
 			p.esq = inserir(p.esq, clienteAux);
 		else
 			p.dir = inserir(p.dir, clienteAux);
@@ -37,10 +38,31 @@ public class AbbOferta {
 			show(p.dir);
 		}
 	}
+	public void procuraCliente(Arvore p, String cpf) {
+		if(p!=null) {
+			if(cpf.compareTo(p.cliente.getCPF())==0) {
+				System.out.println("****Cliente: ****");
+				System.out.println("Nome: " + p.cliente.getNome());
+				System.out.println("Cpf: " + p.cliente.getCPF());
+				System.out.println("Contato: " + p.cliente.getWhatsapp());
+				System.out.println("Total gasto: " + p.cliente.getTotalGasto());
+				if(p.cliente.getAptoOferta()) {
+					System.out.println("Apto para promoções!");
+				}else {
+					System.out.println("Inapto para promoções!");
+				}
+			}else if(cpf.compareTo(p.cliente.getCPF())<0) {
+				procuraCliente(p,cpf);
+			}else if(cpf.compareTo(p.cliente.getCPF())>0)
+				procuraCliente(p,cpf);
+		}else {
+			System.out.println("Cliente com cpf " + cpf + " não encontrado!");
+		}
+	}
 
-	public Arvore removeValor(Arvore p, Cliente clienteAux) {
+	public Arvore removeValor(Arvore p, String cpf) {
 		if (p != null) {
-			if (clienteAux.getTotalGasto()==p.cliente.getTotalGasto()) {
+			if (cpf.compareTo(p.cliente.getCPF()) == 0) {
 				if (p.esq == null && p.dir == null) // nó a ser removido é nó folha
 					return null;
 				if (p.esq == null) { // se não há sub-árvore esquerda o ponteiro passa apontar para a sub-árvore
@@ -64,22 +86,23 @@ public class AbbOferta {
 					}
 				}
 			} else { // procura dado a ser removido na ABB
-				if (clienteAux.getTotalGasto()<p.cliente.getTotalGasto())
-					p.esq = removeValor(p.esq, clienteAux);
+				if (cpf.compareTo(p.cliente.getCPF()) < 0)
+					p.esq = removeValor(p.esq, cpf);
 				else
-					p.dir = removeValor(p.dir, clienteAux);
+					p.dir = removeValor(p.dir, cpf);
 			}
 		}
 		return p;
 	}
+
 	public Cliente retiraDecrescente(Arvore p) {
 		Cliente cliente = null;
-		if(p!=null) {
+		if (p != null) {
 			retiraDecrescente(p.esq);
 			retiraDecrescente(p.dir);
-			 cliente = p.cliente;
-			 removeValor(p,p.cliente);
+			cliente = p.cliente;
+			removeValor(p, p.cliente.getCPF());
 		}
-		return cliente; 
+		return cliente;
 	}
 }

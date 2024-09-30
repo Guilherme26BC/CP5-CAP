@@ -39,9 +39,31 @@ public class AbbCliente {
 		}
 	}
 
-	public Arvore removeValor(Arvore p, Cliente clienteAux) {
+	public void procuraCliente(Arvore p, String cpf) {
+		if(p!=null) {
+			if(cpf.compareTo(p.cliente.getCPF())==0) {
+				System.out.println("****Cliente: ****");
+				System.out.println("Nome: " + p.cliente.getNome());
+				System.out.println("Cpf: " + p.cliente.getCPF());
+				System.out.println("Contato: " + p.cliente.getWhatsapp());
+				System.out.println("Total gasto: " + p.cliente.getTotalGasto());
+				if(p.cliente.getAptoOferta()) {
+					System.out.println("Apto para promoções!");
+				}else {
+					System.out.println("Inapto para promoções!");
+				}
+			}else if(cpf.compareTo(p.cliente.getCPF())<0) {
+				procuraCliente(p,cpf);
+			}else if(cpf.compareTo(p.cliente.getCPF())>0)
+				procuraCliente(p,cpf);
+		}else {
+			System.out.println("Cliente com cpf " + cpf + " não encontrado!");
+		}
+	}
+
+	public Arvore removeValor(Arvore p, String cpf) {
 		if (p != null) {
-			if (clienteAux.getCPF().compareTo(p.cliente.getCPF()) == 0) {
+			if (cpf.compareTo(p.cliente.getCPF()) == 0) {
 				if (p.esq == null && p.dir == null) // nó a ser removido é nó folha
 					return null;
 				if (p.esq == null) { // se não há sub-árvore esquerda o ponteiro passa apontar para a sub-árvore
@@ -65,10 +87,10 @@ public class AbbCliente {
 					}
 				}
 			} else { // procura dado a ser removido na ABB
-				if (clienteAux.getCPF().compareTo(p.cliente.getCPF()) < 0)
-					p.esq = removeValor(p.esq, clienteAux);
+				if (cpf.compareTo(p.cliente.getCPF()) < 0)
+					p.esq = removeValor(p.esq, cpf);
 				else
-					p.dir = removeValor(p.dir, clienteAux);
+					p.dir = removeValor(p.dir,cpf);
 			}
 		}
 		return p;
