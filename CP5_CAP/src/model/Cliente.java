@@ -14,6 +14,19 @@ public class Cliente {
 		this.whatsapp = whatsapp;
 		this.totalGasto = totalGasto;
 	}
+	
+	public void show() {
+		System.out.println("****Cliente: ****");
+		System.out.println("\t" + getNome());
+		System.out.println("\t" + getCPF());
+		System.out.println("\t" + getWhatsapp());
+		System.out.println("\t" + getTotalGasto());
+		if(isAptoOferta()) {
+			System.out.println("Apto para promoções!");
+		}else {
+			System.out.println("Inapto para promoções!");
+		}
+	}
 
 	public String getNome() {
 		return nome;
@@ -54,7 +67,5 @@ public class Cliente {
 	public void setAptoOferta(boolean aptoOferta) {
 		this.aptoOferta = aptoOferta;
 	}
-	public boolean getAptoOferta() {
-		return aptoOferta;
-	}
+
 }

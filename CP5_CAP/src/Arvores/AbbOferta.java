@@ -1,6 +1,5 @@
 package Arvores;
 
-import Arvores.AbbCliente.Arvore;
 import model.Cliente;
 
 public class AbbOferta {
@@ -31,26 +30,14 @@ public class AbbOferta {
 	public void show(Arvore p) {
 		if (p != null) {
 			show(p.esq);
-			System.out.println("\t" + p.cliente.getNome());
-			System.out.println("\t" + p.cliente.getCPF());
-			System.out.println("\t" + p.cliente.getWhatsapp());
-			System.out.println("\t" + p.cliente.getTotalGasto());
+			p.cliente.show();
 			show(p.dir);
 		}
 	}
 	public void procuraCliente(Arvore p, String cpf) {
 		if(p!=null) {
 			if(cpf.compareTo(p.cliente.getCPF())==0) {
-				System.out.println("****Cliente: ****");
-				System.out.println("Nome: " + p.cliente.getNome());
-				System.out.println("Cpf: " + p.cliente.getCPF());
-				System.out.println("Contato: " + p.cliente.getWhatsapp());
-				System.out.println("Total gasto: " + p.cliente.getTotalGasto());
-				if(p.cliente.getAptoOferta()) {
-					System.out.println("Apto para promoções!");
-				}else {
-					System.out.println("Inapto para promoções!");
-				}
+				p.cliente.show();
 			}else if(cpf.compareTo(p.cliente.getCPF())<0) {
 				procuraCliente(p,cpf);
 			}else if(cpf.compareTo(p.cliente.getCPF())>0)
@@ -105,4 +92,5 @@ public class AbbOferta {
 		}
 		return cliente;
 	}
+	
 }

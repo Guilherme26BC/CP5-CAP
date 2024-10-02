@@ -11,7 +11,6 @@ public class AbbCliente {
 	}
 
 	public Arvore root = null;
-
 	public Arvore inserir(Arvore p, Cliente clienteAux) {
 		// insere elemento em uma ABB, insere a raiz
 		if (p == null) {
@@ -31,34 +30,23 @@ public class AbbCliente {
 	public void show(Arvore p) {
 		if (p != null) {
 			show(p.esq);
-			System.out.println("\t" + p.cliente.getNome());
-			System.out.println("\t" + p.cliente.getCPF());
-			System.out.println("\t" + p.cliente.getWhatsapp());
-			System.out.println("\t" + p.cliente.getTotalGasto());
+			p.cliente.show();
 			show(p.dir);
 		}
 	}
 
-	public void procuraCliente(Arvore p, String cpf) {
+	public Cliente procuraCliente(Arvore p, String cpf) {
 		if(p!=null) {
 			if(cpf.compareTo(p.cliente.getCPF())==0) {
-				System.out.println("****Cliente: ****");
-				System.out.println("Nome: " + p.cliente.getNome());
-				System.out.println("Cpf: " + p.cliente.getCPF());
-				System.out.println("Contato: " + p.cliente.getWhatsapp());
-				System.out.println("Total gasto: " + p.cliente.getTotalGasto());
-				if(p.cliente.getAptoOferta()) {
-					System.out.println("Apto para promoções!");
-				}else {
-					System.out.println("Inapto para promoções!");
-				}
+				return p.cliente;
 			}else if(cpf.compareTo(p.cliente.getCPF())<0) {
 				procuraCliente(p,cpf);
 			}else if(cpf.compareTo(p.cliente.getCPF())>0)
 				procuraCliente(p,cpf);
 		}else {
-			System.out.println("Cliente com cpf " + cpf + " não encontrado!");
+			return null;
 		}
+		return null;
 	}
 
 	public Arvore removeValor(Arvore p, String cpf) {
@@ -109,14 +97,29 @@ public class AbbCliente {
 	public void showFalse(Arvore p) {
 		if (p != null) {
 			show(p.esq);
-			if(p.cliente.getAptoOferta()) {
-				System.out.println("\t" + p.cliente.getNome());
-				System.out.println("\t" + p.cliente.getCPF());
-				System.out.println("\t" + p.cliente.getWhatsapp());
-				System.out.println("\t" + p.cliente.getTotalGasto());
+			if(p.cliente.isAptoOferta()) {
+				p.cliente.show();
 				
 			}
 			show(p.dir);
 		}
+	}
+	public double somaTodos(Arvore p, double soma) {
+		if(p!=null) {
+		soma += p.cliente.getTotalGasto();
+		soma= somaTodos(p.esq, soma);
+		soma= somaTodos(p.dir, soma);
+		}
+		return soma;
+	}
+	public int qntMaior(Arvore p, double valor,int cont) {
+		if(p!=null) {
+			if(p.cliente.getTotalGasto()>valor) {
+				cont++;
+			}
+			cont = qntMaior(p.esq,valor,cont);
+			cont = qntMaior(p.dir,valor,cont);
+		}
+		return cont;
 	}
 }

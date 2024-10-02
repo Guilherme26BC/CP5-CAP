@@ -32,9 +32,8 @@ public class DivulgaOferta {
 			switch (opcao) {
 			case 0:
 				System.out.println("\n\nClientes que não aceitaram ou não estavam adequados para a oferta");
-				/*
-				 * Apresenta todos os clientes que nao aceitaram nenhuma oferta
-				 */
+				cadastro.showFalse(cadastro.root);
+				opcao = 0;
 				break;
 			case 1:
 				System.out.print("Digite nome: ");
@@ -56,6 +55,7 @@ public class DivulgaOferta {
 			case 2:
 				System.out.print("Qual o valor de saldo minimo exigido: R$ ");
 				totalGasto = le.nextDouble();
+				
 				oferta.root= oferta.inserir(oferta.root, cadastro.verificaOferta(cadastro.root, totalGasto));
 				oferta.show(oferta.root);
 				oferta.retiraDecrescente(oferta.root);
@@ -82,27 +82,30 @@ public class DivulgaOferta {
 				do {
 					System.out.println("\t 1) Consulta cliente buscando pelo CPF");
 					System.out.println("\t 2) Apresenta o total de gasto de todos os clientes");
-					System.out.println(
-							"\t 3) Apresenta a quantidade de clientes com saldo acima de um valor a ser consultado");
+					System.out.println("\t 3) Apresenta a quantidade de clientes com saldo acima de um valor a ser consultado");
 					System.out.println("\t 4) Volta menu principal");
 					op = le.nextInt();
 					switch (op) {
 					case 1:
 						System.out.print("Informe CPF para consulta");
 						cpf = le.next();
-						cadastro.procuraCliente(null, cpf);
+						Cliente client =cadastro.procuraCliente(cadastro.root, cpf);
+						if(client!=null) {
+							client.show();
+						}else {
+							System.out.println("Cliente não encontrado");
+						}
 						break;
 					case 2:
-						/*
-						 * Apresenta soma de todos os gastos de todos os clientes
-						 */
+						double soma=0;
+						System.out.println("Total de gasto de todos os clientes: " + cadastro.somaTodos(cadastro.root, soma));
 						break;
 					case 3:
 						System.out.print("Qual valor minimo de gastos para consulta? R$ ");
 						double minimo = le.nextDouble();
-						/*
-						 * Apresenta a quantidade de clientes com gastos a partir do minimo consultado
-						 */
+						int cont=0;
+						cont =cadastro.qntMaior(cadastro.root, minimo, cont);
+						System.out.println("Existem " + cont + " clientes com gastos superior a " + minimo);
 						break;
 					case 4:
 						break;
@@ -114,9 +117,12 @@ public class DivulgaOferta {
 			case 4:
 				System.out.print("Informe CPF do cliente que deseja ser retirado do cadastro");
 				cpf = le.next();
-				/*
-				 * Retira da ABB de cadastro o cliente escolhido pelo CPF
-				 */
+				if(cadastro.procuraCliente(cadastro.root, cpf)!=null) {
+					cadastro.removeValor(cadastro.root, cpf);					
+				}else {
+					System.out.println("Cliente não encontrado!");
+				}
+
 				break;
 			default:
 				System.out.println("Opcao invalida");
