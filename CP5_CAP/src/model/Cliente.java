@@ -6,7 +6,10 @@ public class Cliente {
 	private String whatsapp;
 	private double totalGasto;
 	private boolean aptoOferta;
+	private boolean aceitaOferta;
 	
+	
+
 	public Cliente(String nome, String cPF, String whatsapp, double totalGasto) {
 		super();
 		this.nome = nome;
@@ -21,10 +24,10 @@ public class Cliente {
 		System.out.println("\t" + getCPF());
 		System.out.println("\t" + getWhatsapp());
 		System.out.println("\t" + getTotalGasto());
-		if(isAptoOferta()) {
-			System.out.println("Apto para promoções!");
+		if(isAceitaOferta()) {
+			System.out.println("Oferta aceita!");
 		}else {
-			System.out.println("Inapto para promoções!");
+			System.out.println("Oferta não aceitas!");
 		}
 	}
 
@@ -67,5 +70,11 @@ public class Cliente {
 	public void setAptoOferta(boolean aptoOferta) {
 		this.aptoOferta = aptoOferta;
 	}
+	public boolean isAceitaOferta() {
+		return aceitaOferta;
+	}
 
+	public void setAceitaOferta(boolean aceitaOferta) {
+		this.aceitaOferta = aceitaOferta;
+	}
 }

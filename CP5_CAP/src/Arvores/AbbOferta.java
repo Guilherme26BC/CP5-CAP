@@ -12,14 +12,12 @@ public class AbbOferta {
 	public Arvore root = null;
 
 	public Arvore inserir(Arvore p, Cliente clienteAux) {
-		// insere elemento em uma ABB, insere a raiz
 		if (p == null) {
 			p = new Arvore();
 			p.cliente = clienteAux;
 			p.esq = null;
 			p.dir = null;
 		}
-		// compara o valor com "p" e analisa em qual lugar ele fica
 		else if (clienteAux.getTotalGasto() < p.cliente.getTotalGasto())
 			p.esq = inserir(p.esq, clienteAux);
 		else
@@ -39,9 +37,9 @@ public class AbbOferta {
 			if(cpf.compareTo(p.cliente.getCPF())==0) {
 				p.cliente.show();
 			}else if(cpf.compareTo(p.cliente.getCPF())<0) {
-				procuraCliente(p,cpf);
+				procuraCliente(p.esq,cpf);
 			}else if(cpf.compareTo(p.cliente.getCPF())>0)
-				procuraCliente(p,cpf);
+				procuraCliente(p.dir,cpf);
 		}else {
 			System.out.println("Cliente com cpf " + cpf + " não encontrado!");
 		}
@@ -50,19 +48,14 @@ public class AbbOferta {
 	public Arvore removeValor(Arvore p, String cpf) {
 		if (p != null) {
 			if (cpf.compareTo(p.cliente.getCPF()) == 0) {
-				if (p.esq == null && p.dir == null) // nó a ser removido é nó folha
+				if (p.esq == null && p.dir == null) 
 					return null;
-				if (p.esq == null) { // se não há sub-árvore esquerda o ponteiro passa apontar para a sub-árvore
-										// direita
+				if (p.esq == null) {
 					return p.dir;
 				} else {
-					if (p.dir == null) { // se não há sub-árvore direita o ponteiro passa apontar para a sub-árvore
-											// esquerda
+					if (p.dir == null) { 
 						return p.esq;
-					} else { /*
-								 * o nó a ser retirado possui sub-arvore esquerda e direita, então o nó que será
-								 * retirado deve-se encontrar o menor valor na sub-árvore á direita
-								 */
+					} else { 
 						Arvore aux, ref;
 						ref = p.dir;
 						aux = p.dir;
@@ -72,7 +65,7 @@ public class AbbOferta {
 						return ref;
 					}
 				}
-			} else { // procura dado a ser removido na ABB
+			} else { 
 				if (cpf.compareTo(p.cliente.getCPF()) < 0)
 					p.esq = removeValor(p.esq, cpf);
 				else
@@ -91,6 +84,14 @@ public class AbbOferta {
 			removeValor(p, p.cliente.getCPF());
 		}
 		return cliente;
+	}
+	
+	public void gerarFilaDecrescente(Arvore p, FilaCliente fila) {
+	    if (p != null) {
+	        gerarFilaDecrescente(p.dir, fila);
+	        fila.enqueue(p.cliente);
+	        gerarFilaDecrescente(p.esq, fila); 
+	    }
 	}
 	
 }

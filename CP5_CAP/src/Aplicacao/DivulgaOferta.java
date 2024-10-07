@@ -9,15 +9,25 @@ import model.Cliente;
 
 public class DivulgaOferta {
 	/*
-	 * NOMES E RM dos alunos que compõem o grupo
+	 551665 - Felipe Cortez
+	550282 - Guilherme Bezerra 
+	98632 - Lucas de Lima
+	99748 - Rodolfo Sanches
+	99692 - Vitor Granero
 	 */
 	public static void main(String[] args) {
-		Scanner le = new Scanner(System.in);
+		
 		AbbCliente cadastro = new AbbCliente();
 		AbbOferta oferta = new AbbOferta();
 	
 		FilaCliente filaOferta = new FilaCliente();
-		//filaOferta.init();
+		
+		menu(cadastro, oferta, filaOferta);
+		
+	}
+	
+	public static void menu(AbbCliente cadastro, AbbOferta oferta, FilaCliente filaOferta) {
+		Scanner le = new Scanner(System.in);
 		
 		int opcao, op;
 		String nome, whatsapp, cpf;
@@ -27,13 +37,11 @@ public class DivulgaOferta {
 			System.out.println(" 1 - Inscricao um cliente");
 			System.out.println(" 2 - Oferta de novo produto/promocacao");
 			System.out.println(" 3 – Entrar no Submenu ");
-			System.out.println(" 4 - Remove um cliente do cadastro");
+			System.out.println(" 4 - Clientes que não aceitaram ofertas");
 			opcao = le.nextInt();
 			switch (opcao) {
 			case 0:
-				System.out.println("\n\nClientes que não aceitaram ou não estavam adequados para a oferta");
-				cadastro.showFalse(cadastro.root);
-				opcao = 0;
+				System.out.println("Encerrando o programa!");
 				break;
 			case 1:
 				System.out.print("Digite nome: ");
@@ -45,38 +53,37 @@ public class DivulgaOferta {
 				whatsapp = le.next();
 				System.out.print("Informe total gasto do cliente R$: ");
 				totalGasto = le.nextDouble();
-				/*
-				 * Intancia um objeto da classe Cliente e insere na ABB cadastro organizada pelo
-				 * CPF
-				 */
 				Cliente cliente = new Cliente(nome, cpf, whatsapp, totalGasto);
 				cadastro.root = cadastro.inserir(cadastro.root, cliente);
 				break;
 			case 2:
-				System.out.print("Qual o valor de saldo minimo exigido: R$ ");
-				totalGasto = le.nextDouble();
-				
-				oferta.root= oferta.inserir(oferta.root, cadastro.verificaOferta(cadastro.root, totalGasto));
-				oferta.show(oferta.root);
-				oferta.retiraDecrescente(oferta.root);
-				/*
-				 * Percorrendo a ABB de cadastro gera ABB oferta usando como criterio de
-				 * organizacao o total de gasto do cliente.
-				 *
-				 * Usando um método de percurso gerar uma fila de clientes para contactar via
-				 * whatsapp, em ordem decrescente de gastos (o primeiro cliente deve ser o com
-				 * maior valor de gasto.
-				 *
-				 * Esvazia ABB oferta.
-				 */
-				/*
-				 * Nesse trecho de programa que é simulada a tentativa de fazer o contato com
-				 * cada um dos clientes presentes na fila. Até nao ter mais clientes para
-				 * contactar.
-				 *
-				 * Cada cliente que aceita a oferta tem o atributo apto para oferta alterado
-				 * para false no seu cadastro
-				 */
+			    System.out.print("Qual o valor de saldo minimo exigido: R$ ");
+			    totalGasto = le.nextDouble();
+
+			    oferta.root = null; 
+			    cadastro.verificaOferta(cadastro.root, totalGasto, oferta);
+
+			    oferta.gerarFilaDecrescente(oferta.root, filaOferta);
+			    filaOferta.show();
+			   
+			    while (!filaOferta.isEmpty()) {
+			        Cliente clienteO = filaOferta.dequeue();
+			        System.out.println("Contatando cliente: " + clienteO.getNome() + " - Whatsapp: " + clienteO.getWhatsapp());
+			        System.out.print("Cliente aceitou a oferta? (1 - Sim, 0 - Não): ");
+			        int resposta = le.nextInt();
+
+			        if (resposta == 1) {
+			            System.out.println("Oferta aceita.");
+			            clienteO.setAceitaOferta(true);
+			            clienteO.setAptoOferta(false);
+			        } else {
+			            System.out.println("Oferta recusada.");
+			        }
+			        clienteO.show();
+			        cadastro.atualizaDado(cadastro.root, clienteO);
+			    }
+
+			    oferta.root = null;
 				break;
 			case 3:
 				do {
@@ -108,6 +115,7 @@ public class DivulgaOferta {
 						System.out.println("Existem " + cont + " clientes com gastos superior a " + minimo);
 						break;
 					case 4:
+						System.out.println("Encerrando o submenu");
 						break;
 					default:
 						System.out.println("Opcao invalida");
@@ -115,19 +123,18 @@ public class DivulgaOferta {
 				} while (op != 4);
 				break;
 			case 4:
-				System.out.print("Informe CPF do cliente que deseja ser retirado do cadastro");
-				cpf = le.next();
-				if(cadastro.procuraCliente(cadastro.root, cpf)!=null) {
-					cadastro.removeValor(cadastro.root, cpf);					
-				}else {
-					System.out.println("Cliente não encontrado!");
-				}
+				System.out.println("\n\nClientes que não aceitaram ou não estavam adequados para a oferta");
+				cadastro.showFalse(cadastro.root);
 
 				break;
 			default:
 				System.out.println("Opcao invalida");
+				menu(cadastro, oferta, filaOferta);
 			}
-		} while (opcao != 0);
+		} while (opcao!=0);
+	
+		
 		le.close();
 	}
+	
 }
